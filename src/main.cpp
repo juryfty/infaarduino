@@ -6,11 +6,16 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <Temperature_LM75_Derived.h>
+
 // OLED ustawienia
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define OLED_RESET -1
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+//LM75A
+Generic_LM75 temperature;
 
 // Bitmapa ikony słońca 
 const unsigned char bitmap_slonce [] PROGMEM = {
@@ -32,9 +37,9 @@ const unsigned char bitmap_slonce [] PROGMEM = {
   0b00000000, 0b00000000
   };
 
-const char* ssid = "A5"; // Wi-Fi SSID
-const char* password = "Alamakota2miwi00"; // Wi-Fi hasło
-const char* apiKey = "ed5bde3e37aa34d35ac3cef08bf06714";  
+const char* ssid = "XD"; // Wi-Fi SSID
+const char* password = "xxx"; // Wi-Fi hasło
+const char* apiKey = "xxx";  
 const char* city = "Warsaw";
 
 void setup() {
@@ -136,6 +141,23 @@ void loop() {
         pobiraniePogody();
   }
 
-  delay(10000); //co 10sek
+  for (int i=0; i<10; i++) {
+    float tempLM75 = temperature.readTemperatureC();
+    delay(1000);
+    Serial.print("Temperature = ");
+    Serial.print(tempLM75);
+    Serial.println(" C");
+
+    // Tylko dolna linia — np. linia 7 (ekran 8x tekst, 0-7)
+    display.fillRect(0, 56, SCREEN_WIDTH, 8, SSD1306_BLACK); // wyczyść tylko ostatnią linię
+    display.setCursor(0, 56);
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
+    display.print("LM75: ");
+    display.print(tempLM75);
+    display.println(" C");
+    display.display();
+  }
+  
 
 }
