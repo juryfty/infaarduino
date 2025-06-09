@@ -6,8 +6,6 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-unsigned long lastInteraction = 0;
-
 // OLED ustawienia
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -35,13 +33,12 @@ const unsigned char bitmap_slonce [] PROGMEM = {
   };
 
 const char* ssid = "A5"; // Wi-Fi SSID
-const char* password = "XXX"; // Wi-Fi hasło
+const char* password = "Alamakota2miwi00"; // Wi-Fi hasło
 const char* apiKey = "ed5bde3e37aa34d35ac3cef08bf06714";  
 const char* city = "Warsaw";
 
 void setup() {
   Serial.begin(74880);
-  delay(1000);
   Serial.println("\nŁączenie z WiFi...");
 
   // Inicjalizacja OLED
@@ -54,7 +51,8 @@ void setup() {
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0, 0);
-  display.println("Laczenie WiFi...");
+  Serial.print("Laczenie WiFi...");
+  display.print("Laczenie WiFi...");
   display.display();
 
   // Połączenie z Wi-Fi
@@ -62,15 +60,22 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    display.print(".");
+    display.display();
   }
-
+  
   Serial.println("\nPołączono z WiFi");
-  Serial.print("IP: ");
-  Serial.println(WiFi.localIP());
+  display.println("\nPołączono z WiFi");
+  Serial.println("IP: ");
+  display.println("IP: ");
+  Serial.print(WiFi.localIP());
+  display.print(WiFi.localIP());
+  display.display();
+}
 
-  // Pobranie danych pogodowych
-  if (WiFi.status() == WL_CONNECTED) {
-    WiFiClient client;
+void pobiraniePogody() {
+  // Pranie danych pogodowych
+  WiFiClient client;
     HTTPClient http;
 
     String url = "http://api.openweathermap.org/data/2.5/weather?q=" + String(city) +
@@ -122,14 +127,15 @@ void setup() {
     }
 
     http.end();
-  }
 }
 
+
 void loop() {
-  // Można tu dodać odświeżanie co kilka minut
-  if (millis() - lastInteraction > 30000) {
-  display.clearDisplay();
-  display.display();
-}
+
+  if (WiFi.status() == WL_CONNECTED) {
+        pobiraniePogody();
+  }
+
+  delay(10000); //co 10sek
 
 }
