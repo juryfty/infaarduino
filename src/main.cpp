@@ -35,7 +35,7 @@ const unsigned char bitmap_slonce [] PROGMEM = {
   };
 
 const char* ssid = "A5"; // Wi-Fi SSID
-const char* password = "Alamakota2miwi00"; // Wi-Fi hasło
+const char* password = "XXX"; // Wi-Fi hasło
 const char* apiKey = "ed5bde3e37aa34d35ac3cef08bf06714";  
 const char* city = "Warsaw";
 
