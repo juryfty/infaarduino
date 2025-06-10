@@ -17,7 +17,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 //LM75A
 Generic_LM75 temperature;
 
-// Bitmapa ikony słońca 
+// Bitmapa ikony  
 const unsigned char bitmap_slonce [] PROGMEM = {
   0b00000000, 0b00000000,
   0b00000011, 0b11000000,
@@ -118,7 +118,7 @@ void pobiraniePogody() {
         display.println("Opis:");
         display.println(desc);
 
-        // Dodanie bitmapy słońca
+        // Dodanie bitmapy ikony
         display.drawBitmap(100, 0, bitmap_slonce, 16, 16, SSD1306_WHITE);
 
         display.display();
